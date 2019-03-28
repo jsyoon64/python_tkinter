@@ -29,7 +29,8 @@ class CtrClient:
 
                 for key,value in newclients.items():
                     self.clientCount = self.clientCount+1
-                    gui.addClientButton(key, self.clientCount)
+                    #gui.addClientRButton(key, self.clientCount)
+                    gui.addClientButton(key)
                 print(newclients)
 
     def sendMsg(self):
@@ -37,7 +38,6 @@ class CtrClient:
         # self.sock.send(bytes(input(""), 'utf-8'))
         #self.sock.send(bytes(data, 'utf-8'))
         pass
-
 
 class CtrGui:
     def __init__(self, master):
@@ -57,7 +57,7 @@ class CtrGui:
         self.frame2=tkinter.Frame(self.master, relief="solid", bd=1)
         self.frame2.pack(side="right", fill="both", expand=True)
 
-    def addClientButton(self, language, val):
+    def addClientRButton(self, language, val):
         tkinter.Radiobutton(self.frame1,
                             text=language,
                             # indicatoron=0,
@@ -67,9 +67,20 @@ class CtrGui:
                             command=self.ShowChoice,
                             value=val).pack(anchor=tkinter.W)
 
+    def addClientButton(self, ButtonID):
+        tkinter.Button(self.frame1, text=ButtonID, fg="red", command=self.showDetail).pack()
+
 
     def ShowChoice(self):
         print(self.v.get())
+
+    def showDetail(self):
+        tkinter.Label(self.frame2,text='Power A',padx=10).pack(side=tkinter.LEFT)
+        tkinter.Label(self.frame2,text='Power B',padx=10).pack(side=tkinter.LEFT)
+        tkinter.Label(self.frame2,text='LED',padx=10).pack(side=tkinter.LEFT)
+        tkinter.Label(self.frame2,text='LED STYLE',padx=10).pack(side=tkinter.LEFT)
+
+        pass
 
 root = tkinter.Tk()
 client = CtrClient(('localhost',4100))

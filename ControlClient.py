@@ -1,6 +1,6 @@
 import socket
 import threading
-import tkinter
+from tkinter import *
 import pickle
 
 class CtrClient:
@@ -44,17 +44,17 @@ class CtrGui:
         self.master = master
         self.master.geometry('300x300')
 
-        self.v = tkinter.IntVar()
+        self.v = IntVar()
         self.v.set(1)  # initializing the choice, i.e. Python
 
         #self.master.grid_rowconfigure(0, weight=1)
         #self.master.grid_columnconfigure(0, weight=1)
         self.win_colour = '#D2B48C'
         #self.current_page=0
-        self.frame1=tkinter.Frame(self.master, relief="solid", bd=1)
+        self.frame1=Frame(self.master, relief="solid", bd=1)
         self.frame1.pack(side="left", fill="both", expand=True)
 
-        self.frame2=tkinter.Frame(self.master, relief="solid", bd=1)
+        self.frame2=Frame(self.master, relief="solid", bd=1)
         self.frame2.pack(side="right", fill="both", expand=True)
 
     def addClientRButton(self, language, val):
@@ -68,21 +68,28 @@ class CtrGui:
                             value=val).pack(anchor=tkinter.W)
 
     def addClientButton(self, ButtonID):
-        tkinter.Button(self.frame1, text=ButtonID, fg="red", command=self.showDetail).pack()
+        Button(self.frame1, text=ButtonID, fg="red", command=self.showDetail(ButtonID)).pack()
 
 
     def ShowChoice(self):
         print(self.v.get())
 
-    def showDetail(self):
-        tkinter.Label(self.frame2,text='Power A',padx=10).pack(side=tkinter.LEFT)
-        tkinter.Label(self.frame2,text='Power B',padx=10).pack(side=tkinter.LEFT)
-        tkinter.Label(self.frame2,text='LED',padx=10).pack(side=tkinter.LEFT)
-        tkinter.Label(self.frame2,text='LED STYLE',padx=10).pack(side=tkinter.LEFT)
+    def showDetail(self,key):
+        Label(self.frame2,relief=RIDGE,text='Power A',width=12).grid(row=0,column=0)
+        Label(self.frame2,relief=RIDGE,text='Power B',width=12).grid(row=0,column=1)
+        Label(self.frame2,relief=RIDGE,text='LED',width=12).grid(row=0,column=2)
+        Label(self.frame2,relief=RIDGE,text='LED STYLE',width=12).grid(row=0,column=3)
 
-        pass
+        text1 = 'OFF' if(CtrClient.currClients[key]['PA'] == 0) else 'ON'
+        Button(self.frame2,text= text1,padx=5).grid(row=1,column=0)
+        text1 = 'OFF' if(CtrClient.currClients[key]['PB'] == 0) else 'ON'
+        Button(self.frame2,text=text1,padx=5).grid(row=1,column=1)
+        text1 = 'OFF' if(CtrClient.currClients[key]['LED'] == 0) else 'ON'
+        Button(self.frame2,text=text1,padx=5).grid(row=1,column=2)
+        text1 = str(CtrClient.currClients[key]['STYLE'])
+        Button(self.frame2,text=text1,padx=5).grid(row=1,column=3)
 
-root = tkinter.Tk()
+root = Tk()
 client = CtrClient(('localhost',4100))
 
 root.title("Control Pedestal GUI")

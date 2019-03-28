@@ -52,10 +52,10 @@ class CtrGui:
         #self.master.grid_columnconfigure(0, weight=1)
         self.win_colour = '#D2B48C'
         #self.current_page=0
-        self.frame1=Frame(self.master, relief="solid", bd=1)
+        self.frame1=Frame(self.master, relief="solid", bd=1, width=150)
         self.frame1.pack(side="left", fill="both", expand=True)
 
-        self.frame2=Frame(self.master, relief="solid", bd=1)
+        self.frame2=Frame(self.master, relief="solid", bd=1,width=450)
         self.frame2.pack(side="right", fill="both", expand=True)
     """
     def addClientRButton(self, language, val):

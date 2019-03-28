@@ -87,13 +87,13 @@ class CtrGui:
             btn.config(text=text1)
 
     def showDetail(self,key):
-        Button(self.frame2,text='Power A',width=12,command=lambda:self.showChoice(lebalPA, key, 'PA')).grid(row=0,column=0)
+        Button(self.frame2,text='Power A',width=12,command=lambda:self.showChoice(labelPA, key, 'PA')).grid(row=0,column=0)
         Button(self.frame2,text='Power B',width=12,command=lambda:self.showChoice(labelPB, key, 'PB')).grid(row=0,column=1)
         Button(self.frame2,text='LED',width=12,command=lambda:self.showChoice(labelLED, key, 'LED')).grid(row=0,column=2)
         Button(self.frame2,text='STYLE',width=12,command=lambda:self.showChoice(labelSTYLE, key, 'STYLE')).grid(row=0,column=3)
 
         text1 = 'OFF' if(CtrClient.currClients[key]['PA'] == 0) else 'ON'
-        lebalPA=Label(self.frame2,relief=RIDGE,text=text1,width=12).grid(row=1,column=0)
+        labelPA=Label(self.frame2,relief=RIDGE,text=text1,width=12).grid(row=1,column=0)
         text1 = 'OFF' if(CtrClient.currClients[key]['PB'] == 0) else 'ON'
         labelPB=Label(self.frame2,relief=RIDGE,text=text1,width=12).grid(row=1,column=1)
         text1 = 'OFF' if(CtrClient.currClients[key]['LED'] == 0) else 'ON'

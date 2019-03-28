@@ -43,7 +43,7 @@ class CtrGui:
 
     def __init__(self, master):
         self.master = master
-        self.master.geometry('300x300')
+        self.master.geometry('600x300')
 
         self.v = IntVar()
         self.v.set(1)  # initializing the choice, i.e. Python
@@ -57,7 +57,7 @@ class CtrGui:
 
         self.frame2=Frame(self.master, relief="solid", bd=1)
         self.frame2.pack(side="right", fill="both", expand=True)
-
+    """
     def addClientRButton(self, language, val):
         Radiobutton(self.frame1,
                             text=language,
@@ -67,24 +67,26 @@ class CtrGui:
                             variable=self.v,
                             command=self.ShowChoice,
                             value=val).pack(anchor=W)
-
+    """
     def addClientButton(self, ButtonID):
-        Button(self.frame1, text=ButtonID, fg="red", command=self.showDetail(ButtonID))
+        buttonx = Button(self.frame1, text=ButtonID, fg="red", width=15)
+        buttonx.grid()
+        buttonx.config(command=lambda:self.showDetail(ButtonID))
 
 
-    def showChoice(self, btn, key, key1):
+    def showChoice(self, Label, key, key1):
         val = CtrClient.currClients[key][key1]
         if(key1 == 'STYLE'):
             val = val +1
-            if(val > 10):
+            if(val > 9):
                 val = 0
             CtrClient.currClients[key][key1] = val
-            btn.config(text=str(val))
+            Label.config(text=str(val))
 
         else:
             CtrClient.currClients[key][key1] = 1 if val == 0 else 0
             text1 = 'OFF' if (CtrClient.currClients[key][key1] == 0) else 'ON'
-            btn.config(text=text1)
+            Label.config(text=text1)
 
     def showDetail(self,key):
         Button(self.frame2,text='Power A',width=12,command=lambda:self.showChoice(labelPA, key, 'PA')).grid(row=0,column=0)
@@ -93,13 +95,17 @@ class CtrGui:
         Button(self.frame2,text='STYLE',width=12,command=lambda:self.showChoice(labelSTYLE, key, 'STYLE')).grid(row=0,column=3)
 
         text1 = 'OFF' if(CtrClient.currClients[key]['PA'] == 0) else 'ON'
-        labelPA=Label(self.frame2,relief=RIDGE,text=text1,width=12).grid(row=1,column=0)
+        labelPA=Label(self.frame2,relief=RIDGE,text=text1,width=12)
+        labelPA.grid(row=1,column=0)
         text1 = 'OFF' if(CtrClient.currClients[key]['PB'] == 0) else 'ON'
-        labelPB=Label(self.frame2,relief=RIDGE,text=text1,width=12).grid(row=1,column=1)
+        labelPB=Label(self.frame2,relief=RIDGE,text=text1,width=12)
+        labelPB.grid(row=1,column=1)
         text1 = 'OFF' if(CtrClient.currClients[key]['LED'] == 0) else 'ON'
-        labelLED=Label(self.frame2,relief=RIDGE,text=text1,width=12).grid(row=1,column=2)
+        labelLED=Label(self.frame2,relief=RIDGE,text=text1,width=12)
+        labelLED.grid(row=1,column=2)
         text1 = str(CtrClient.currClients[key]['STYLE'])
-        labelSTYLE=Label(self.frame2,relief=RIDGE,text=text1,width=12).grid(row=1,column=3)
+        labelSTYLE=Label(self.frame2,relief=RIDGE,text=text1,width=12)
+        labelSTYLE.grid(row=1,column=3)
 
 
 root = Tk()

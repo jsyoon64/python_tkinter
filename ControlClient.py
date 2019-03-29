@@ -123,7 +123,7 @@ class CtrGui:
 
 
 root = Tk()
-client = CtrClient(('localhost',4100))
+client = CtrClient(('localhost',3100))
 
 root.title("Control Pedestal GUI")
 gui = CtrGui(root)

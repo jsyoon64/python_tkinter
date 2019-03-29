@@ -34,7 +34,7 @@ class CtrClient:
                 print(newclients)
 
     def sendMsg(self,val):
-        self.sock.send(bytes(val, 'utf-8'))
+        self.sock.send(val)
 
 class CtrGui:
 
@@ -77,20 +77,20 @@ class CtrGui:
             text1 = 'OFF' if (val == 0) else 'ON'
             Label.config(text=text1)
 
-        ctrMsg = 'SPP-CG'+key+ chr(0x00)+ chr(0x00)
+        ctrMsg = ('SPP-CG'+key+ chr(0x00)+ chr(0x00)).encode('utf-8')
 
         if(key1 == 'PA'):
             payload = '<json>{"CON1":'+ str(val) + '}</json>'
-            ctrMsg = ctrMsg + chr(0xA0) + chr(len(payload)) +payload
+            ctrMsg += b'\xA0' + bytes([len(payload)]) + payload.encode('utf-8')
 
         elif(key1 == 'PB'):
             payload = '<json>{"CON2":'+ str(val) + '}</json>'
-            ctrMsg = ctrMsg + chr(0xA0) + chr(len(payload)) +payload
+            ctrMsg += b'\xA0' + bytes([len(payload)]) + payload.encode('utf-8')
 
         elif(key1 == 'LED'):
             payload = '<json>{"OPER":'+ str(val) + ',"STYLE":'+ str(CtrClient.currClients[key]['STYLE'])
-            payload += '"ONTIME":"00:00","OFFTIME":"00:00"}</json>'
-            ctrMsg = ctrMsg + chr(0xA1) + chr(len(payload)) +payload
+            payload += ',"ONTIME":"00:00","OFFTIME":"00:00"}</json>'
+            ctrMsg += b'\xA1' + bytes([len(payload)]) + payload.encode('utf-8')
 
         else:
             ctrMsg = ''
@@ -98,6 +98,7 @@ class CtrGui:
         if(ctrMsg != ''):
             CtrClient.sendMsg(CtrClient,ctrMsg)
             print(ctrMsg)
+            #print(hex(ctrMsg[12]),hex(ctrMsg[13]),hex(ctrMsg[14]))
 
 
     def showDetail(self,key):

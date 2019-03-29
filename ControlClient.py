@@ -18,6 +18,7 @@ class CtrClient:
         while True:
             data = self.sock.recv(1024)
             if not data:
+                root.destroy()
                 break
 
             clientLists = pickle.loads(data)

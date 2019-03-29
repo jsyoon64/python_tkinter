@@ -33,11 +33,8 @@ class CtrClient:
                     gui.addClientButton(key)
                 print(newclients)
 
-    def sendMsg(self):
-        #data = 'SPP-CG' + id + 'AAAA'
-        # self.sock.send(bytes(input(""), 'utf-8'))
-        #self.sock.send(bytes(data, 'utf-8'))
-        pass
+    def sendMsg(self,val):
+        self.sock.send(bytes(val, 'utf-8'))
 
 class CtrGui:
 
@@ -57,17 +54,8 @@ class CtrGui:
 
         self.frame2=Frame(self.master, relief="solid", bd=1,width=450)
         self.frame2.pack(side="right", fill="both", expand=True)
-    """
-    def addClientRButton(self, language, val):
-        Radiobutton(self.frame1,
-                            text=language,
-                            # indicatoron=0,
-                            # width = 20,
-                            padx=20,
-                            variable=self.v,
-                            command=self.ShowChoice,
-                            value=val).pack(anchor=W)
-    """
+
+
     def addClientButton(self, ButtonID):
         buttonx = Button(self.frame1, text=ButtonID, fg="red", width=15)
         buttonx.grid()
@@ -84,9 +72,33 @@ class CtrGui:
             Label.config(text=str(val))
 
         else:
-            CtrClient.currClients[key][key1] = 1 if val == 0 else 0
-            text1 = 'OFF' if (CtrClient.currClients[key][key1] == 0) else 'ON'
+            val = 1 if val == 0 else 0
+            CtrClient.currClients[key][key1] = val
+            text1 = 'OFF' if (val == 0) else 'ON'
             Label.config(text=text1)
+
+        ctrMsg = 'SPP-CG'+key+ chr(0x00)+ chr(0x00)
+
+        if(key1 == 'PA'):
+            payload = '<json>{"CON1":'+ str(val) + '}</json>'
+            ctrMsg = ctrMsg + chr(0xA0) + chr(len(payload)) +payload
+
+        elif(key1 == 'PB'):
+            payload = '<json>{"CON2":'+ str(val) + '}</json>'
+            ctrMsg = ctrMsg + chr(0xA0) + chr(len(payload)) +payload
+
+        elif(key1 == 'LED'):
+            payload = '<json>{"OPER":'+ str(val) + ',"STYLE":'+ str(CtrClient.currClients[key]['STYLE'])
+            payload += '"ONTIME":"00:00","OFFTIME":"00:00"}</json>'
+            ctrMsg = ctrMsg + chr(0xA1) + chr(len(payload)) +payload
+
+        else:
+            ctrMsg = ''
+
+        if(ctrMsg != ''):
+            CtrClient.sendMsg(CtrClient,ctrMsg)
+            print(ctrMsg)
+
 
     def showDetail(self,key):
         Button(self.frame2,text='Power A',width=12,command=lambda:self.showChoice(labelPA, key, 'PA')).grid(row=0,column=0)

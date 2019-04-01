@@ -15,7 +15,7 @@ languages = [
 
 def ShowChoice():
     print(v.get())
-    makeRadioButton("JAVA",6)
+    #makeRadioButton("JAVA",6)
 
 
 def makeRadioButton(language,val ):

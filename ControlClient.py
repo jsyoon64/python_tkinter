@@ -114,6 +114,7 @@ class CtrGui:
 
 
     def showDetail(self,key):
+        print(key)
         self.buttonPA.config(command=lambda:self.showChoice(self.labelPA, key, 'PA'))
         self.buttonPB.config(command=lambda:self.showChoice(self.labelPB, key, 'PB'))
         self.buttonLED.config(command=lambda:self.showChoice(self.labelLED, key, 'LED'))

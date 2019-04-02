@@ -42,6 +42,7 @@ class CtrClient:
 class CtrGui:
 
     guiClients = {}
+
     def __init__(self, master):
         self.master = master
         self.master.geometry('500x200')
@@ -63,9 +64,17 @@ class CtrGui:
 
 
     def addClientButton(self, ButtonID,value):
-        buttonx = Button(self.frame1, text=ButtonID, fg="red", width=10)
+
+        buttonx=Radiobutton(self.frame1,text=ButtonID, indicatoron=0,width=10, fg='red',
+                    #variable=v,
+                    value=self.v.get()
+                    )
+        self.v.set(self.v.get() + 1)
         buttonx.grid(sticky='N',padx=5,pady=5)
         buttonx.config(command=lambda:self.showDetail(ButtonID))
+        #buttonx = Button(self.frame1, text=ButtonID, fg="red", width=10)
+        #buttonx.grid(sticky='N',padx=5,pady=5)
+        #buttonx.config(command=lambda:self.showDetail(ButtonID))
         if(self.detailButton == 0):
             self.makeDetailButton(ButtonID,value)
             self.detailButton = 1

@@ -2,6 +2,8 @@ import tkinter as tk
 
 root = tk.Tk()
 
+root.title('test radio')
+
 v = tk.IntVar()
 v.set(1)  # initializing the choice, i.e. Python
 
@@ -15,14 +17,14 @@ languages = [
 
 def ShowChoice():
     print(v.get())
-    #makeRadioButton("JAVA",6)
+    makeRadioButton("JAVA",6)
 
 
 def makeRadioButton(language,val ):
     tk.Radiobutton(root,
                   text=language,
-                  #indicatoron=0,
-                  #width = 20,
+                  indicatoron=0,
+                  width = 20,
                   padx = 20,
                   variable=v,
                   command=ShowChoice,

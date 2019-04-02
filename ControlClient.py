@@ -2,6 +2,7 @@ import socket
 import threading
 from tkinter import *
 import pickle
+import tkinter.ttk
 
 class CtrClient:
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -72,15 +73,15 @@ class CtrGui:
 
     def showChoice(self, Label, key, key1):
         val = self.guiClients[key][key1]
-        #print(val)
         #val = CtrClient.currClients[key][key1]
         if(key1 == 'STYLE'):
             val = val +1
             if(val > 9):
                 val = 0
             #CtrClient.currClients[key][key1] = val
-            self.guiClients[key][key1] = val
-            Label.config(text=str(val))
+            self.guiClients[key][key1] =val
+            #Label.config(text=str(val))
+            self.comboboxSTYLE.set(val)
 
         else:
             val = 1 if val == 0 else 0
@@ -99,7 +100,8 @@ class CtrGui:
             ctrMsg += b'\xA0' + bytes([len(payload)]) + payload.encode('utf-8')
 
         elif(key1 == 'LED'):
-            payload = '<json>{"OPER":'+ str(val) + ',"STYLE":'+ str(self.guiClients[key]['STYLE'])
+            #payload = '<json>{"OPER":'+ str(val) + ',"STYLE":'+ str(self.guiClients[key]['STYLE'])
+            payload = '<json>{"OPER":'+ str(val) + ',"STYLE":'+ str(self.comboboxSTYLE.get())
             payload += ',"ONTIME":"00:00","OFFTIME":"00:00"}</json>'
             ctrMsg += b'\xA1' + bytes([len(payload)]) + payload.encode('utf-8')
 
@@ -109,7 +111,6 @@ class CtrGui:
         if(ctrMsg != ''):
             CtrClient.sendMsg(CtrClient,ctrMsg)
             print(ctrMsg)
-            #print(hex(ctrMsg[12]),hex(ctrMsg[13]),hex(ctrMsg[14]))
 
 
     def showDetail(self,key):
@@ -125,8 +126,9 @@ class CtrGui:
         self.labelPB.config(text=text1)
         text1 = 'OFF' if(CtrClient.currClients[key]['LED'] == 0) else 'ON'
         self.labelLED.config(text=text1)
-        text1 = str(CtrClient.currClients[key]['STYLE'])
-        self.labelSTYLE.config(text=text1)
+        #text1 = str(CtrClient.currClients[key]['STYLE'])
+        #self.labelSTYLE.config(text=text1)
+        self.comboboxSTYLE.set(CtrClient.currClients[key]['STYLE'])
 
     def makeDetailButton(self,key,value):
         self.buttonPA = Button(self.frame2,text='Power A',width=12)
@@ -143,7 +145,8 @@ class CtrGui:
 
         self.buttonSTYLE = Button(self.frame2,text='STYLE',width=12)
         self.buttonSTYLE.grid(row=0,column=3,padx=2,pady=2)
-        self.buttonSTYLE.config(command=lambda:self.showChoice(self.labelSTYLE, key, 'STYLE'))
+        #self.buttonSTYLE.config(command=lambda:self.showChoice(self.labelSTYLE, key, 'STYLE'))
+        self.buttonSTYLE.config(command=lambda:self.showChoice(self.comboboxSTYLE, key, 'STYLE'))
 
         text1 = 'OFF' if(value['PA'] == 0) else 'ON'
         self.labelPA=Label(self.frame2,relief=RIDGE,text=text1,width=12)
@@ -154,9 +157,16 @@ class CtrGui:
         text1 = 'OFF' if(value['LED'] == 0) else 'ON'
         self.labelLED=Label(self.frame2,relief=RIDGE,text=text1,width=12)
         self.labelLED.grid(row=1,column=2,padx=2)
-        text1 = str(value['STYLE'])
-        self.labelSTYLE=Label(self.frame2,relief=RIDGE,text=text1,width=12)
-        self.labelSTYLE.grid(row=1,column=3,padx=2)
+
+        #values = ['style '+str(i) for i in range(0,9)]
+        values = [i for i in range(0,9)]
+        self.comboboxSTYLE = tkinter.ttk.Combobox(self.frame2,values=values,justify='center',width=10)
+        self.comboboxSTYLE.grid(row=1,column=3,padx=2)
+        #self.comboboxSTYLE['values'] = ('style 0','style 1', 'style 2')
+        self.comboboxSTYLE.set(value['STYLE'])
+        #text1 = str(value['STYLE'])
+        #self.labelSTYLE=Label(self.frame2,relief=RIDGE,text=text1,width=12)
+        #self.labelSTYLE.grid(row=1,column=3,padx=2)
 
 root = Tk()
 client = CtrClient(('localhost',3100))

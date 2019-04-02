@@ -43,7 +43,7 @@ class CtrGui:
     guiClients = {}
     def __init__(self, master):
         self.master = master
-        self.master.geometry('475x200')
+        self.master.geometry('500x200')
 
         self.v = IntVar()
         self.v.set(1)  # initializing the choice, i.e. Python
@@ -57,13 +57,13 @@ class CtrGui:
         self.frame1=Frame(self.master, relief="solid", bd=1, width=150)
         self.frame1.pack(side="left", fill="both", expand=False)
 
-        self.frame2=Frame(self.master, relief="solid", bd=1,width=325)
+        self.frame2=Frame(self.master, relief="solid", bd=1,width=350)
         self.frame2.pack(side="right", fill="both", expand=True)
 
 
     def addClientButton(self, ButtonID,value):
         buttonx = Button(self.frame1, text=ButtonID, fg="red", width=10)
-        buttonx.grid(padx=5,pady=5)
+        buttonx.grid(sticky='N',padx=5,pady=5)
         buttonx.config(command=lambda:self.showDetail(ButtonID))
         if(self.detailButton == 0):
             self.makeDetailButton(ButtonID,value)
@@ -130,33 +130,33 @@ class CtrGui:
 
     def makeDetailButton(self,key,value):
         self.buttonPA = Button(self.frame2,text='Power A',width=12)
-        self.buttonPA.grid(row=0,column=0)
+        self.buttonPA.grid(row=0,column=0,padx=2,pady=2)
         self.buttonPA.config(command=lambda:self.showChoice(self.labelPA, key, 'PA'))
 
         self.buttonPB = Button(self.frame2,text='Power B',width=12)
-        self.buttonPB.grid(row=0,column=1)
+        self.buttonPB.grid(row=0,column=1,padx=2,pady=2)
         self.buttonPB.config(command=lambda:self.showChoice(self.labelPB, key, 'PB'))
 
         self.buttonLED = Button(self.frame2,text='LED',width=12)
-        self.buttonLED.grid(row=0,column=2)
+        self.buttonLED.grid(row=0,column=2,padx=2,pady=2)
         self.buttonLED.config(command=lambda:self.showChoice(self.labelLED, key, 'LED'))
 
         self.buttonSTYLE = Button(self.frame2,text='STYLE',width=12)
-        self.buttonSTYLE.grid(row=0,column=3)
+        self.buttonSTYLE.grid(row=0,column=3,padx=2,pady=2)
         self.buttonSTYLE.config(command=lambda:self.showChoice(self.labelSTYLE, key, 'STYLE'))
 
         text1 = 'OFF' if(value['PA'] == 0) else 'ON'
         self.labelPA=Label(self.frame2,relief=RIDGE,text=text1,width=12)
-        self.labelPA.grid(row=1,column=0)
+        self.labelPA.grid(row=1,column=0,padx=2)
         text1 = 'OFF' if(value['PB'] == 0) else 'ON'
         self.labelPB=Label(self.frame2,relief=RIDGE,text=text1,width=12)
-        self.labelPB.grid(row=1,column=1)
+        self.labelPB.grid(row=1,column=1,padx=2)
         text1 = 'OFF' if(value['LED'] == 0) else 'ON'
         self.labelLED=Label(self.frame2,relief=RIDGE,text=text1,width=12)
-        self.labelLED.grid(row=1,column=2)
+        self.labelLED.grid(row=1,column=2,padx=2)
         text1 = str(value['STYLE'])
         self.labelSTYLE=Label(self.frame2,relief=RIDGE,text=text1,width=12)
-        self.labelSTYLE.grid(row=1,column=3)
+        self.labelSTYLE.grid(row=1,column=3,padx=2)
 
 root = Tk()
 client = CtrClient(('localhost',3100))

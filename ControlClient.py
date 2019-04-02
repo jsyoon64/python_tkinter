@@ -27,6 +27,7 @@ class CtrClient:
                 res = clientLists.keys() - self.currClients.keys()
                 newclients = {k:clientLists[k] for k in res}
                 #self.currClients.update(newclients)
+                CtrGui.guiClients.update(newclients)
 
                 for key,value in newclients.items():
                     self.clientCount = self.clientCount+1
@@ -39,9 +40,10 @@ class CtrClient:
 
 class CtrGui:
 
+    guiClients = {}
     def __init__(self, master):
         self.master = master
-        self.master.geometry('600x300')
+        self.master.geometry('475x200')
 
         self.v = IntVar()
         self.v.set(1)  # initializing the choice, i.e. Python
@@ -53,15 +55,15 @@ class CtrGui:
         self.win_colour = '#D2B48C'
         #self.current_page=0
         self.frame1=Frame(self.master, relief="solid", bd=1, width=150)
-        self.frame1.pack(side="left", fill="both", expand=True)
+        self.frame1.pack(side="left", fill="both", expand=False)
 
-        self.frame2=Frame(self.master, relief="solid", bd=1,width=450)
+        self.frame2=Frame(self.master, relief="solid", bd=1,width=325)
         self.frame2.pack(side="right", fill="both", expand=True)
 
 
     def addClientButton(self, ButtonID,value):
-        buttonx = Button(self.frame1, text=ButtonID, fg="red", width=15)
-        buttonx.grid()
+        buttonx = Button(self.frame1, text=ButtonID, fg="red", width=10)
+        buttonx.grid(padx=5,pady=5)
         buttonx.config(command=lambda:self.showDetail(ButtonID))
         if(self.detailButton == 0):
             self.makeDetailButton(ButtonID,value)
@@ -69,17 +71,20 @@ class CtrGui:
 
 
     def showChoice(self, Label, key, key1):
-        val = CtrClient.currClients[key][key1]
+        val = self.guiClients[key][key1]
+        #print(val)
+        #val = CtrClient.currClients[key][key1]
         if(key1 == 'STYLE'):
             val = val +1
             if(val > 9):
                 val = 0
-            CtrClient.currClients[key][key1] = val
+            #CtrClient.currClients[key][key1] = val
+            self.guiClients[key][key1] = val
             Label.config(text=str(val))
 
         else:
             val = 1 if val == 0 else 0
-            CtrClient.currClients[key][key1] = val
+            self.guiClients[key][key1] = val
             text1 = 'OFF' if (val == 0) else 'ON'
             Label.config(text=text1)
 
@@ -94,7 +99,7 @@ class CtrGui:
             ctrMsg += b'\xA0' + bytes([len(payload)]) + payload.encode('utf-8')
 
         elif(key1 == 'LED'):
-            payload = '<json>{"OPER":'+ str(val) + ',"STYLE":'+ str(CtrClient.currClients[key]['STYLE'])
+            payload = '<json>{"OPER":'+ str(val) + ',"STYLE":'+ str(self.guiClients[key]['STYLE'])
             payload += ',"ONTIME":"00:00","OFFTIME":"00:00"}</json>'
             ctrMsg += b'\xA1' + bytes([len(payload)]) + payload.encode('utf-8')
 

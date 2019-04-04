@@ -62,7 +62,6 @@ class CtrGui:
         self.frame2=Frame(self.master, relief="solid", bd=1,width=350)
         self.frame2.pack(side="right", fill="both", expand=True)
 
-
     def addClientButton(self, ButtonID,value):
 
         buttonx=Radiobutton(self.frame1,text=ButtonID, indicatoron=0,width=10, fg='red',
@@ -78,7 +77,6 @@ class CtrGui:
         if(self.detailButton == 0):
             self.makeDetailButton(ButtonID,value)
             self.detailButton = 1
-
 
     def showChoice(self, Label, key, key1):
         val = self.guiClients[key][key1]
@@ -120,7 +118,6 @@ class CtrGui:
         if(ctrMsg != ''):
             CtrClient.sendMsg(CtrClient,ctrMsg)
             print(ctrMsg)
-
 
     def showDetail(self,key):
         print(key)

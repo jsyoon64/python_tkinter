@@ -35,6 +35,8 @@ class CtrClient:
                     gui.addClientButton(key,value)
                 #print(newclients)
             self.currClients.update(clientLists)
+            #print('curr:',self.currClients)
+            #print('rxed:',clientLists)
 
     def sendMsg(self,val):
         self.sock.send(val)
@@ -124,7 +126,7 @@ class CtrGui:
         self.buttonPA.config(command=lambda:self.showChoice(self.labelPA, key, 'PA'))
         self.buttonPB.config(command=lambda:self.showChoice(self.labelPB, key, 'PB'))
         self.buttonLED.config(command=lambda:self.showChoice(self.labelLED, key, 'LED'))
-        self.buttonSTYLE.config(command=lambda:self.showChoice(self.labelSTYLE, key, 'STYLE'))
+        self.buttonSTYLE.config(command=lambda:self.showChoice(self.comboboxSTYLE, key, 'STYLE'))
 
         text1 = 'OFF' if(CtrClient.currClients[key]['PA'] == 0) else 'ON'
         self.labelPA.config(text=text1)
